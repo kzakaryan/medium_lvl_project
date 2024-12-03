@@ -8,9 +8,11 @@ import java.util.*;
 
 public class SearchEngineLaunch {
 
-    public static void startSearchEngine(String filename) {
-        List<Person> people = new ArrayList<>();
-        Map<String, Set<Integer>> invertedIndex = new HashMap<>();
+    List<Person> people = new ArrayList<>();
+    Map<String, Set<Integer>> invertedIndex = new HashMap<>();
+
+    public static void startSearchEngine(List<Person> people, Map<String, Set<Integer>> invertedIndex, String filename) {
+
 
         if (filename == null) {
             System.out.println("Error");

@@ -1,7 +1,12 @@
 import logic.SearchEngineLaunch;
+import model.Person;
+
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        List<Person> people = new ArrayList<>();
+        Map<String, Set<Integer>> invertedIndex = new HashMap<>();
         String filename = null;
 
         for (int i = 0; i < args.length; i++) {
@@ -10,6 +15,6 @@ public class Main {
                 break;
             }
         }
-        SearchEngineLaunch.startSearchEngine(filename);
+        SearchEngineLaunch.startSearchEngine(people, invertedIndex, filename);
     }
 }
