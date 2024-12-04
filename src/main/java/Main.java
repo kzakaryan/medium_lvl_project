@@ -1,6 +1,5 @@
 import logic.SearchEngineLaunch;
 import model.Person;
-
 import java.util.*;
 
 public class Main {
