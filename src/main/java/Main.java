@@ -1,19 +1,25 @@
-import logic.SearchEngineLaunch;
-import model.Person;
 import java.util.*;
 
-public class Main {
-    public static void main(String[] args) {
-        List<Person> people = new ArrayList<>();
-        Map<String, Set<Integer>> invertedIndex = new HashMap<>();
-        String filename = null;
+import service.SearchEngine;
+import service.impl.SearchEngineLauncherImpl;
 
+/**
+ * Main Class to run the application
+ */
+public class Main {
+    /**
+     * main method to run the application
+     * @param args input (file path for cl input)
+     */
+    public static void main(String[] args) {
+        String filename = null;
         for (int i = 0; i < args.length; i++) {
             if ("--data".equals(args[i])) {
                 filename = args[i + 1];
                 break;
             }
         }
-        SearchEngineLaunch.startSearchEngine(people, invertedIndex, filename);
+        SearchEngine searchEngine = new SearchEngineLauncherImpl();
+        searchEngine.startSearchEngine(filename);
     }
 }
