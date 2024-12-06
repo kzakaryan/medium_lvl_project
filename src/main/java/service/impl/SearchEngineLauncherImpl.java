@@ -3,6 +3,7 @@ package service.impl;
 import model.Person;
 import service.SearchEngine;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -14,17 +15,26 @@ public class SearchEngineLauncherImpl implements SearchEngine {
     /**
      * Instance Variables
      */
+    InputStream inputStream = new InputStream() {
+        @Override
+        public int read() throws IOException {
+            return 0;
+        }
+    };
     List<Person> people = new ArrayList<>();
     Map<String, Set<Integer>> invertedIndex = new HashMap<>();
-    Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+    boolean running = true;
 
     /**
      * Starts the search engine by loading data from the specified file and displaying the menu to the user.
      * @param filename The name of the file containing the data to be loaded.
      * @throws IllegalArgumentException if the filename is null or empty.
+     * @throws FileNotFoundException when file is null
+     * @throws IOException when file not found
      */
     @Override
-    public void startSearchEngine(String filename) throws IllegalArgumentException{
+    public void startSearchEngine(String filename) throws IllegalArgumentException, IOException {
         validateInputFile(filename);
         loadDataFromFile(filename);
         showMenu();
@@ -44,25 +54,30 @@ public class SearchEngineLauncherImpl implements SearchEngine {
     /**
      * Loads data from the given file and populates the people ArrayList and inverted index Map.
      * @param filename The name of the file containing the data to be loaded.
+     * @throws FileNotFoundException when file is null
+     * @throws IOException when file not found
      */
-    private void loadDataFromFile(String filename) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+    private void loadDataFromFile(String filename) throws IOException {
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filename), StandardCharsets.UTF_8);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        try (BufferedReader _ = new BufferedReader(new InputStreamReader(new FileInputStream(filename), "UTF-8"))) {
             String line;
             int lineIndex = 0;
-            while ((line = reader.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
                 processLine(line, lineIndex);
                 lineIndex++;
             }
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
         }
+        bufferedReader.close();
     }
 
     /**
      * Displays the menu to the user.
      */
     private void showMenu() {
-        while (true) {
+        while (running) {
             System.out.println("=== Menu ===");
             System.out.println("1. Find a person");
             System.out.println("2. Print all people");
@@ -78,7 +93,7 @@ public class SearchEngineLauncherImpl implements SearchEngine {
                     break;
                 case 0:
                     System.out.println("Bye!");
-                    System.exit(0);
+                    running = false;
                     break;
                 default:
                     System.out.println("Incorrect option! Try again.");
