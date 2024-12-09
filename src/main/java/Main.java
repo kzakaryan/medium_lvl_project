@@ -23,7 +23,7 @@ public class Main {
                 break;
             }
         }
-        SearchEngine searchEngine = new SearchEngineLauncherImpl();
+        var searchEngine = new SearchEngineLauncherImpl();
         searchEngine.startSearchEngine(filename);
     }
 }
