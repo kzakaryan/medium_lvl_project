@@ -1,5 +1,6 @@
 package service;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 /**
  * This interface defines the contract for a basic search engine system that can
@@ -15,6 +16,6 @@ public interface SearchEngine {
      * @throws IllegalArgumentException if the filename is null, empty, or invalid.
      * @throws IOException if there is an error reading from the file.
      */
-    void startSearchEngine(String filename);
+    void startSearchEngine(String filename) throws IOException;
 
 }

@@ -3,6 +3,7 @@ package service.impl;
 import model.Person;
 import service.SearchEngine;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -14,17 +15,26 @@ public class SearchEngineLauncherImpl implements SearchEngine {
     /**
      * Instance Variables
      */
+    InputStream inputStream = new InputStream() {
+        @Override
+        public int read() throws IOException {
+            return 0;
+        }
+    };
     List<Person> people = new ArrayList<>();
     Map<String, Set<Integer>> invertedIndex = new HashMap<>();
-    Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+    boolean running = true;
 
     /**
      * Starts the search engine by loading data from the specified file and displaying the menu to the user.
      * @param filename The name of the file containing the data to be loaded.
      * @throws IllegalArgumentException if the filename is null or empty.
+     * @throws FileNotFoundException when file is null
+     * @throws IOException when file not found
      */
     @Override
-    public void startSearchEngine(String filename) throws IllegalArgumentException{
+    public void startSearchEngine(String filename) throws IllegalArgumentException, IOException {
         validateInputFile(filename);
         loadDataFromFile(filename);
         showMenu();
@@ -44,25 +54,30 @@ public class SearchEngineLauncherImpl implements SearchEngine {
     /**
      * Loads data from the given file and populates the people ArrayList and inverted index Map.
      * @param filename The name of the file containing the data to be loaded.
+     * @throws FileNotFoundException when file is null
+     * @throws IOException when file not found
      */
-    private void loadDataFromFile(String filename) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            int lineIndex = 0;
-            while ((line = reader.readLine()) != null) {
+    private void loadDataFromFile(String filename) throws IOException {
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filename), StandardCharsets.UTF_8);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        try (BufferedReader _ = new BufferedReader(new InputStreamReader(new FileInputStream(filename), "UTF-8"))) {
+            var line = "";
+            var lineIndex = 0;
+            while ((line = bufferedReader.readLine()) != null) {
                 processLine(line, lineIndex);
                 lineIndex++;
             }
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
         }
+        bufferedReader.close();
     }
 
     /**
      * Displays the menu to the user.
      */
     private void showMenu() {
-        while (true) {
+        while (running) {
             System.out.println("=== Menu ===");
             System.out.println("1. Find a person");
             System.out.println("2. Print all people");
@@ -78,7 +93,7 @@ public class SearchEngineLauncherImpl implements SearchEngine {
                     break;
                 case 0:
                     System.out.println("Bye!");
-                    System.exit(0);
+                    running = false;
                     break;
                 default:
                     System.out.println("Incorrect option! Try again.");
@@ -94,12 +109,12 @@ public class SearchEngineLauncherImpl implements SearchEngine {
      * @param lineIndex The index of the line in the file.
      */
     private void processLine(String line, int lineIndex) {
-        ArrayList<String> parts = new ArrayList<>(Arrays.asList(line.split(" ")));
-        String firstName = parts.get(0);
-        String lastName = parts.get(1);
-        String email = parts.size() > 2 ? parts.get(2) : null;
+        var parts = new ArrayList<>(Arrays.asList(line.split(" ")));
+        var firstName = parts.get(0);
+        var lastName = parts.get(1);
+        var email = parts.size() > 2 ? parts.get(2) : null;
 
-        Person person = new Person(firstName, lastName, email);
+        var person = new Person(firstName, lastName, email);
         this.people.add(person);
 
         addToInvertedIndex(firstName, lineIndex);
@@ -143,16 +158,16 @@ public class SearchEngineLauncherImpl implements SearchEngine {
      * Searches for people based on user input and matching strategy.
      */
     private void findPeople() {
-        String strategy = getSearchStrategy();
-        String query = getSearchQuery();
+        var strategy = getSearchStrategy();
+        var query = getSearchQuery();
 
         if (query == null || query.trim().isEmpty()) {
             System.out.println("Search query cannot be empty");
             return;
         }
 
-        ArrayList<String> queryWords = new ArrayList<>(Arrays.asList(query.split(" ")));
-        Set<Integer> matchingIndices = findMatchingPeople(strategy, queryWords);
+        var queryWords = new ArrayList<>(Arrays.asList(query.split(" ")));
+        var matchingIndices = findMatchingPeople(strategy, queryWords);
 
         if (matchingIndices.isEmpty()) {
             System.out.println("No matching people found.");
@@ -171,7 +186,7 @@ public class SearchEngineLauncherImpl implements SearchEngine {
     private String getSearchStrategy() {
         while (true) {
             System.out.print("Select a matching strategy: ALL, ANY, NONE: ");
-            String strategy = scanner.nextLine().toUpperCase().trim();
+            var strategy = scanner.nextLine().toUpperCase().trim();
             if (strategy.equals("ALL") || strategy.equals("ANY") || strategy.equals("NONE")) {
                 return strategy;
             } else {
@@ -218,11 +233,11 @@ public class SearchEngineLauncherImpl implements SearchEngine {
      * @return A set of indices of matching people.
      */
     private Set<Integer> findMatchingAll(ArrayList<String> queryWords) {
-        Set<Integer> result = new HashSet<>();
-        Set<Integer> firstWordMatches = invertedIndex.getOrDefault(queryWords.get(0), Collections.emptySet());
+        var result = new HashSet<Integer>();
+        var firstWordMatches = invertedIndex.getOrDefault(queryWords.get(0), Collections.emptySet());
 
         for (int index : firstWordMatches) {
-            boolean allMatch = true;
+            var allMatch = true;
             for (String word : queryWords) {
                 if (!invertedIndex.getOrDefault(word, Collections.emptySet()).contains(index)) {
                     allMatch = false;
@@ -243,7 +258,7 @@ public class SearchEngineLauncherImpl implements SearchEngine {
      * @return A set of indices of matching people.
      */
     private Set<Integer> findMatchingAny(ArrayList<String> queryWords) {
-        Set<Integer> result = new HashSet<>();
+        var result = new HashSet<Integer>();
         for (String word : queryWords) {
             result.addAll(invertedIndex.getOrDefault(word, Collections.emptySet()));
         }
@@ -257,7 +272,7 @@ public class SearchEngineLauncherImpl implements SearchEngine {
      * @return A set of indices of non-matching people.
      */
     private Set<Integer> findMatchingNone(ArrayList<String> queryWords) {
-        Set<Integer> allIndices = new HashSet<>();
+        var allIndices = new HashSet<Integer>();
         for (int i = 0; i < people.size(); i++) {
             allIndices.add(i);
         }
