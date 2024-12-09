@@ -1,18 +1,22 @@
 package utility.impl;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import search.impl.SearchMechanismImpl;
 import utility.UserPromptUtility;
 import validator.SearchEngineValidator;
 import java.util.Scanner;
 
-@Slf4j
+/**
+ * Class designed for CLI - User interaction.
+ */
 public class UserPromptUtilityImpl implements UserPromptUtility {
 
     boolean running = true;
     SearchEngineValidator searchEngineValidator = new SearchEngineValidator();
     SearchMechanismImpl searchMechanism = new SearchMechanismImpl();
     Scanner scanner = new Scanner(System.in);
+    private static final Logger log = LoggerFactory.getLogger(SearchMechanismImpl.class);
 
     /**
      * Displays the menu to the user.

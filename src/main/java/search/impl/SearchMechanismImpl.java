@@ -1,15 +1,21 @@
 package search.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import model.Person;
 import search.SearchMechanism;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
+/**
+ * Class designed for Implementing people search with given parameters
+ */
 public class SearchMechanismImpl implements SearchMechanism {
 
+    /**
+     * Instance Variables
+     */
     InputStream inputStream = new InputStream() {
         @Override
         public int read() throws IOException {
@@ -19,6 +25,7 @@ public class SearchMechanismImpl implements SearchMechanism {
     Scanner scanner = new Scanner(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
     Map<String, Set<Integer>> invertedIndex = new HashMap<>();
     List<Person> people = new ArrayList<>();
+    private static final Logger log = LoggerFactory.getLogger(SearchMechanismImpl.class);
 
 
 
