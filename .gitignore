@@ -27,3 +27,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+.idea/
+*.jar
+/log/
+/target/
+!.mvn/wrapper/maven-wrapper.jar.idea/
+.zshrc
