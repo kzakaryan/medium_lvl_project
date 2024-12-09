@@ -1,15 +1,16 @@
 package utility.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import search.impl.SearchMechanismImpl;
-import service.impl.SearchEngineLauncherImpl;
 import utility.UserPromptUtility;
-
+import validator.SearchEngineValidator;
 import java.util.Scanner;
 
+@Slf4j
 public class UserPromptUtilityImpl implements UserPromptUtility {
 
     boolean running = true;
-    SearchEngineLauncherImpl searchEngineLauncher = new SearchEngineLauncherImpl();
+    SearchEngineValidator searchEngineValidator = new SearchEngineValidator();
     SearchMechanismImpl searchMechanism = new SearchMechanismImpl();
     Scanner scanner = new Scanner(System.in);
 
@@ -19,10 +20,11 @@ public class UserPromptUtilityImpl implements UserPromptUtility {
     @Override
     public void startMenu() {
         while (running) {
-            System.out.println("=== Menu ===");
-            System.out.println("1. Find a person");
-            System.out.println("2. Print all people");
-            System.out.println("0. Exit");
+
+            log.info("=== Menu ===");
+            log.info("1. Find a person");
+            log.info("2. Print all people");
+            log.info("0. Exit");
 
             int input = getUserInput();
             switch (input) {
@@ -30,14 +32,14 @@ public class UserPromptUtilityImpl implements UserPromptUtility {
                     searchMechanism.findPeople();
                     break;
                 case 2:
-                    searchEngineLauncher.printAllPeople();
+                    searchEngineValidator.printAllPeople();
                     break;
                 case 0:
-                    System.out.println("Bye!");
+                    log.info("Bye!");
                     running = false;
                     break;
                 default:
-                    System.out.println("Incorrect option! Try again.");
+                    log.info("Incorrect option! Try again.");
             }
         }
     }
@@ -49,11 +51,11 @@ public class UserPromptUtilityImpl implements UserPromptUtility {
      */
     private int getUserInput() {
         while (true) {
-            System.out.print("Choose an option: ");
+            log.info("Choose an option: ");
             if (scanner.hasNextInt()) {
                 return scanner.nextInt();
             } else {
-                System.out.println("Invalid input. Please enter correct number.");
+                log.info("Invalid input. Please enter correct number.");
                 scanner.nextLine();
             }
         }
