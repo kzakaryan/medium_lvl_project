@@ -31,8 +31,5 @@ bin/
 *.jar
 /log/
 /target/
-*.mvn
-mvnw
-mvnw.cmd
 !.mvn/wrapper/maven-wrapper.jar.idea/
 .zshrc
