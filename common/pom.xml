@@ -41,21 +41,6 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
             </plugin>
-
-            <plugin>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-            </plugin>
         </plugins>
     </build>
 
