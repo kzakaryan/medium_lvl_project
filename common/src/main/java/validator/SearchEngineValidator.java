@@ -1,7 +1,7 @@
 package validator;
 
 import exception.FileNotFoundException;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Getter;
 import model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,6 @@ import java.io.*;
 /**
  * Class designed for validations, file checks and user input correctness checks.
  */
-@Slf4j
 public class SearchEngineValidator {
 
     /**
@@ -23,6 +22,13 @@ public class SearchEngineValidator {
     List<Person> people = new ArrayList<>();
     private static final Logger log = LoggerFactory.getLogger(SearchEngineValidator.class);
 
+    public Map<String, Set<Integer>> getInvertedIndex() {
+        return invertedIndex;
+    }
+
+    public List<Person> getPeople() {
+        return people;
+    }
 
     /**
      * Validates that the provided filename is not null or empty.
@@ -40,18 +46,27 @@ public class SearchEngineValidator {
      * @param filename The name of the file containing the data to be loaded.
      */
     public void loadDataFromFile(String filename) {
+        File file = new File(filename);
+        if (!file.exists() || !file.isFile()) {
+            System.out.println("File does not exist or is not a valid file: " + filename);
+            return;
+        }
+
         try (var bufferedReader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(filename), StandardCharsets.UTF_8))) {
+                new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
 
             String line;
             int lineIndex = 0;
 
             while ((line = bufferedReader.readLine()) != null) {
+                System.out.println("Reading line " + lineIndex + ": " + line);
                 processLine(line, lineIndex);
                 lineIndex++;
             }
 
         } catch (IOException e) {
+            System.out.println("Error reading file. Path: " + filename + ". Error: " + e.getMessage());
+            e.printStackTrace();
             log.error("Error reading file: {}", e.getMessage());
         }
     }
@@ -70,7 +85,7 @@ public class SearchEngineValidator {
         var email = parts.size() > 2 ? parts.get(2) : null;
 
         var person = new Person(firstName, lastName, email);
-        this.people.add(person);
+        people.add(person);
 
         addToInvertedIndex(firstName, lineIndex);
         addToInvertedIndex(lastName, lineIndex);
@@ -98,6 +113,7 @@ public class SearchEngineValidator {
      */
     public void printAllPeople() {
         log.info("All people in the system:");
-        log.atInfo().log(people.toString());
+//        log.atInfo().log(people.get(1).toString());
+        System.out.println(this.people.toString());
     }
 }

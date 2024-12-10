@@ -1,34 +1,29 @@
 package mechanism.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import mechanism.SearchMechanism;
 import model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.io.*;
 
 /**
  * Class designed for Implementing people search with given parameters
  */
-@Slf4j
 public class SearchMechanismImpl implements SearchMechanism {
 
     /**
      * Instance Variables
      */
-    InputStream inputStream = new InputStream() {
-        @Override
-        public int read() throws IOException {
-            return 0;
-        }
-    };
     Scanner scanner = new Scanner(System.in);
-    Map<String, Set<Integer>> invertedIndex = new HashMap<>();
-    ArrayList<Person> people = new ArrayList<>();
+    private final Map<String, Set<Integer>> invertedIndex;
+    private final List<Person> people;
     private static final Logger log = LoggerFactory.getLogger(SearchMechanismImpl.class);
+
+    public SearchMechanismImpl(Map<String, Set<Integer>> invertedIndex, List<Person> people) {
+        this.invertedIndex = invertedIndex;
+        this.people = people;
+    }
 
     /**
      * Searches for people based on user input and matching strategy.
@@ -110,6 +105,9 @@ public class SearchMechanismImpl implements SearchMechanism {
      * @return A set of indices of matching people.
      */
     private Set<Integer> findMatchingAll(ArrayList<String> queryWords) {
+        if (queryWords.isEmpty()) {
+            return Collections.emptySet();
+        }
         Set<Integer> result = new HashSet<>();
         Set<Integer> firstWordMatches = invertedIndex.getOrDefault(queryWords.get(0), Collections.emptySet());
 
@@ -149,17 +147,19 @@ public class SearchMechanismImpl implements SearchMechanism {
      * @return A set of indices of non-matching people.
      */
     private Set<Integer> findMatchingNone(ArrayList<String> queryWords) {
-        Set<Integer> allIndices = new HashSet<>();
+        Set<Integer> nonMatchingIndices = new HashSet<>();
         for (int i = 0; i < people.size(); i++) {
-            allIndices.add(i);
+            boolean isNonMatching = true;
+            for (String word : queryWords) {
+                if (invertedIndex.getOrDefault(word, Collections.emptySet()).contains(i)) {
+                    isNonMatching = false;
+                    break;
+                }
+            }
+            if (isNonMatching) {
+                nonMatchingIndices.add(i);
+            }
         }
-
-        Set<Integer> matchingIndices = new HashSet<>();
-        for (String word : queryWords) {
-            matchingIndices.addAll(invertedIndex.getOrDefault(word, Collections.emptySet()));
-        }
-
-        allIndices.removeAll(matchingIndices);
-        return allIndices;
+        return nonMatchingIndices;
     }
 }

@@ -1,6 +1,5 @@
 package utility.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import mechanism.impl.SearchMechanismImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,60 +10,80 @@ import java.util.Scanner;
 /**
  * Class designed for CLI - User interaction.
  */
-@Slf4j
 public class UserPromptUtilityImpl implements UserPromptUtility {
 
-    boolean running = true;
-    SearchEngineValidator searchEngineValidator = new SearchEngineValidator();
-    SearchMechanismImpl searchMechanism = new SearchMechanismImpl();
-    Scanner scanner = new Scanner(System.in);
+    private boolean running = true;
+    private final SearchEngineValidator searchEngineValidator;
+    private final SearchMechanismImpl searchMechanism;
+    private final Scanner scanner = new Scanner(System.in);
     private static final Logger log = LoggerFactory.getLogger(UserPromptUtilityImpl.class);
 
+    public UserPromptUtilityImpl(SearchEngineValidator searchEngineValidator) {
+        this.searchEngineValidator = searchEngineValidator;
+        this.searchMechanism = new SearchMechanismImpl(
+                searchEngineValidator.getInvertedIndex(),
+                searchEngineValidator.getPeople()
+        );
+    }
 
     /**
-     * Displays the menu to the user.
+     * Starts the main interaction loop.
      */
     @Override
     public void startMenu() {
         while (running) {
+            displayMenu();
+            handleUserInput();
+        }
+        close();
+    }
 
-            log.info("=== Menu ===");
-            log.info("1. Find a person");
-            log.info("2. Print all people");
-            log.info("0. Exit");
+    /**
+     * Displays the menu to the user.
+     */
+    private void displayMenu() {
+        log.info("\nMenu:");
+        log.info("1. Search for people");
+        log.info("2. Print all people");
+        log.info("0. Exit");
+    }
 
-            int input = getUserInput();
-            switch (input) {
-                case 1:
-                    searchMechanism.findPeople();
-                    break;
-                case 2:
-                    searchEngineValidator.printAllPeople();
-                    break;
-                case 0:
-                    log.info("Bye!");
-                    running = false;
-                    break;
-                default:
-                    log.info("Incorrect option! Try again.");
-            }
+    /**
+     * Handles user input based on menu selection.
+     */
+    private void handleUserInput() {
+        log.info("Enter your choice: ");
+        String choice = scanner.nextLine().trim();
+
+        switch (choice) {
+            case "1":
+                searchMechanism.findPeople();
+                break;
+            case "2":
+                searchEngineValidator.printAllPeople();
+                break;
+            case "0":
+                stop();
+                break;
+            default:
+                log.info("Invalid choice. Please try again.");
         }
     }
 
     /**
-     * Retrieves an integer input from the user, checking the validity of it.
-     *
-     * @return The integer input.
+     * Stops the main interaction loop.
      */
-    private int getUserInput() {
-        while (true) {
-            log.info("Choose an option: ");
-            if (scanner.hasNextInt()) {
-                return scanner.nextInt();
-            } else {
-                log.info("Invalid input. Please enter correct number.");
-                scanner.nextLine();
-            }
+    public void stop() {
+        running = false;
+        log.info("Exiting program. Goodbye!");
+    }
+
+    /**
+     * Closes resources.
+     */
+    public void close() {
+        if (scanner != null) {
+            scanner.close();
         }
     }
 }

@@ -31,7 +31,7 @@ mvn install
 ```
 ##### - Run the application using Maven with data file path as a command-line argument (In the viewer module)
 ```bash
-mvn exec:java -e -Dexec.args="--data file.txt" -Dexec.mainClass="Main"
+mvn exec:java -e -Dexec.args="--data absolute/path/to/file.txt" -Dexec.mainClass="Main"
 ```
 
 #### Example of Running the Application

@@ -12,14 +12,13 @@ import validator.SearchEngineValidator;
  * A simple search engine that allows the user to search for people based on their name or email.
  * It loads data from a file, stores it in an inverted index, and offers a menu to search and display data.
  */
-@Slf4j
 public class SearchEngineLauncherImpl implements SearchEngine {
 
     /**
      * Instance Variables
      */
-    UserPromptUtilityImpl userPromptUtility = new UserPromptUtilityImpl();
-    SearchEngineValidator searchEngineValidator = new SearchEngineValidator();
+    private final SearchEngineValidator searchEngineValidator = new SearchEngineValidator();
+    private final UserPromptUtilityImpl userPromptUtility = new UserPromptUtilityImpl(searchEngineValidator);
     private static final Logger log = LoggerFactory.getLogger(SearchEngineLauncherImpl.class);
 
 
