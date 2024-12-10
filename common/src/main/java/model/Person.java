@@ -1,7 +1,7 @@
 package model;
 
 /**
- * model.Person class designed
+ * Person record designed to store people in search engine.
  */
 public record Person(String firstName, String lastName, String email) {
 

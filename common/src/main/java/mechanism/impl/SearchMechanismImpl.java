@@ -25,7 +25,7 @@ public class SearchMechanismImpl implements SearchMechanism {
             return 0;
         }
     };
-    Scanner scanner = new Scanner(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+    Scanner scanner = new Scanner(System.in);
     Map<String, Set<Integer>> invertedIndex = new HashMap<>();
     ArrayList<Person> people = new ArrayList<>();
     private static final Logger log = LoggerFactory.getLogger(SearchMechanismImpl.class);
@@ -110,11 +110,11 @@ public class SearchMechanismImpl implements SearchMechanism {
      * @return A set of indices of matching people.
      */
     private Set<Integer> findMatchingAll(ArrayList<String> queryWords) {
-        var result = new HashSet<Integer>();
-        var firstWordMatches = invertedIndex.getOrDefault(queryWords.get(0), Collections.emptySet());
+        Set<Integer> result = new HashSet<>();
+        Set<Integer> firstWordMatches = invertedIndex.getOrDefault(queryWords.get(0), Collections.emptySet());
 
         for (int index : firstWordMatches) {
-            var allMatch = true;
+            boolean allMatch = true;
             for (String word : queryWords) {
                 if (!invertedIndex.getOrDefault(word, Collections.emptySet()).contains(index)) {
                     allMatch = false;
@@ -135,7 +135,7 @@ public class SearchMechanismImpl implements SearchMechanism {
      * @return A set of indices of matching people.
      */
     private Set<Integer> findMatchingAny(ArrayList<String> queryWords) {
-        var result = new HashSet<Integer>();
+        Set<Integer> result = new HashSet<>();
         for (String word : queryWords) {
             result.addAll(invertedIndex.getOrDefault(word, Collections.emptySet()));
         }
@@ -149,7 +149,7 @@ public class SearchMechanismImpl implements SearchMechanism {
      * @return A set of indices of non-matching people.
      */
     private Set<Integer> findMatchingNone(ArrayList<String> queryWords) {
-        var allIndices = new HashSet<Integer>();
+        Set<Integer> allIndices = new HashSet<>();
         for (int i = 0; i < people.size(); i++) {
             allIndices.add(i);
         }

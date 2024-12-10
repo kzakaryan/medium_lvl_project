@@ -10,7 +10,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        String filename = "file.txt";
+        String filename = "";
         for (int i = 0; i < args.length; i++) {
             if ("--data".equals(args[i])) {
                 filename = args[i + 1];

@@ -2,7 +2,6 @@ package validator;
 
 import exception.FileNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import mechanism.impl.SearchMechanismImpl;
 import model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

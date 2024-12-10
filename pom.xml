@@ -75,6 +75,12 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.5.0</version>
+                </plugin>
+
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.13.0</version>
@@ -93,12 +99,11 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>4.0.0-beta-1</version>
+                    <version>3.4.2</version>
                     <configuration>
                         <archive>
                             <manifestEntries>
-
-                                <Main-Class>viewer/src/main/java/Main.java</Main-Class>
+                                <Main-Class>viewer/src/main/java/Main</Main-Class>
                             </manifestEntries>
                         </archive>
                     </configuration>
@@ -220,26 +225,6 @@
                     <groupId>ch.qos.logback</groupId>
                     <artifactId>logback-classic</artifactId>
                     <version>1.5.12</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>3.1.0</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>java</goal>
-                            </goals>
-                            <configuration>
-                                <mainClass>viewer/src/main/java/Main</mainClass> <!-- Your main class here -->
-                                <arguments>
-                                    <argument>--data</argument>
-                                    <argument>viewer/file.txt</argument> <!-- Path to the file you want to pass -->
-                                </arguments>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
