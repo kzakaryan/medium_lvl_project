@@ -13,16 +13,16 @@ class PersonTest {
     }
 
     @Test
-    void PersonTest() {
+    void PersonParamTest() {
         assertAll("Test Props Set:",
-                () -> assertEquals(person.firstName(), "Xachik", "First Name Failed"),
-                () -> assertEquals(person.lastName(), "Zakaryan", "Last Name Failed"),
-                () -> assertEquals(person.email(), "kzakaryan@gmail.com", "Email Failed")
+                () -> assertEquals("Xachik", person.firstName(), "First Name Failed"),
+                () -> assertEquals("Zakaryan", person.lastName(), "Last Name Failed"),
+                () -> assertEquals("kzakaryan@gmail.com", person.email(), "Email Failed")
         );
     }
 
     @Test
     void toStringTest() {
-        assertEquals(person.toString(), "Xachik Zakaryan kzakaryan@gmail.com", "toString Failed");
+        assertEquals("Xachik Zakaryan kzakaryan@gmail.com", person.toString(), "toString Failed");
     }
 }
