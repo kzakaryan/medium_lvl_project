@@ -1,6 +1,5 @@
-package service;
+package launcher;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 /**
  * This interface defines the contract for a basic search engine system that can
