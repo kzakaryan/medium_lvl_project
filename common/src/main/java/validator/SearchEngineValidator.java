@@ -13,6 +13,7 @@ import java.io.*;
 /**
  * Class designed for validations, file checks and user input correctness checks.
  */
+@Getter
 public class SearchEngineValidator {
 
     /**
@@ -21,14 +22,6 @@ public class SearchEngineValidator {
     Map<String, Set<Integer>> invertedIndex = new HashMap<>();
     List<Person> people = new ArrayList<>();
     private static final Logger log = LoggerFactory.getLogger(SearchEngineValidator.class);
-
-    public Map<String, Set<Integer>> getInvertedIndex() {
-        return invertedIndex;
-    }
-
-    public List<Person> getPeople() {
-        return people;
-    }
 
     /**
      * Validates that the provided filename is not null or empty.
