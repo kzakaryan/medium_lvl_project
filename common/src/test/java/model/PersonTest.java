@@ -3,6 +3,9 @@ package model;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Coverage 100%
+ */
 class PersonTest {
 
     private Person person;
@@ -12,6 +15,7 @@ class PersonTest {
         person = new Person("Xachik", "Zakaryan", "kzakaryan@gmail.com");
     }
 
+    @DisplayName("Testing Instance Variables")
     @Test
     void PersonParamTest() {
         assertAll("Test Props Set:",
@@ -21,6 +25,7 @@ class PersonTest {
         );
     }
 
+    @DisplayName("Testing toString()")
     @Test
     void toStringTest() {
         assertEquals("Xachik Zakaryan kzakaryan@gmail.com", person.toString(), "toString Failed");

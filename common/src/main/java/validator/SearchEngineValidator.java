@@ -1,11 +1,9 @@
 package validator;
 
 import exception.FileNotFoundException;
-import lombok.Getter;
 import model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.io.*;
@@ -13,7 +11,6 @@ import java.io.*;
 /**
  * Class designed for validations, file checks and user input correctness checks.
  */
-@Getter
 public class SearchEngineValidator {
 
     /**
@@ -22,6 +19,22 @@ public class SearchEngineValidator {
     Map<String, Set<Integer>> invertedIndex = new HashMap<>();
     List<Person> people = new ArrayList<>();
     private static final Logger log = LoggerFactory.getLogger(SearchEngineValidator.class);
+
+    /**
+     * Getter for InvertedIndex
+     * @return InvertedIndex private instance variable
+     */
+    public Map<String, Set<Integer>> getInvertedIndex() {
+        return invertedIndex;
+    }
+
+    /**
+     * Getter for People
+     * @return People private instance variable
+     */
+    public List<Person> getPeople() {
+        return people;
+    }
 
     /**
      * Validates that the provided filename is not null or empty.
