@@ -45,6 +45,18 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -68,6 +80,7 @@
                             <propertyName>surefireArgLine</propertyName>
                         </configuration>
                     </execution>
+
                     <execution>
                         <id>post-unit-test</id>
                         <phase>test</phase>
@@ -91,6 +104,7 @@
                             <propertyName>failsafeArgLine</propertyName>
                         </configuration>
                     </execution>
+
                     <execution>
                         <id>post-integration-test</id>
                         <phase>post-integration-test</phase>
@@ -102,6 +116,20 @@
                             <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>generate-code-coverage-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
@@ -109,6 +137,10 @@
 
     <reporting>
         <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
