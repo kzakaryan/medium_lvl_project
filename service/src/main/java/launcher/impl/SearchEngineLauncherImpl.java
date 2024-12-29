@@ -2,16 +2,16 @@ package launcher.impl;
 
 import exception.FileNotFoundException;
 import launcher.SearchEngine;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import utility.impl.UserPromptUtilityImpl;
 import validator.SearchEngineValidator;
+import lombok.*;
+import org.slf4j.*;
 
 /**
  * A simple search engine that allows the user to search for people based on their name or email.
  * It loads data from a file, stores it in an inverted index, and offers a menu to search and display data.
  */
+@Getter
 public class SearchEngineLauncherImpl implements SearchEngine {
 
     /**

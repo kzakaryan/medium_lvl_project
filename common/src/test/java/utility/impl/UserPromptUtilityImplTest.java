@@ -1,7 +1,6 @@
 package utility.impl;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
 
 class UserPromptUtilityImplTest {
 
@@ -15,5 +14,17 @@ class UserPromptUtilityImplTest {
 
     @Test
     void close() {
+    }
+
+    @Test
+    void testStartMenu() {
+    }
+
+    @Test
+    void testStop() {
+    }
+
+    @Test
+    void testClose() {
     }
 }

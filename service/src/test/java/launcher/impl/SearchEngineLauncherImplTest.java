@@ -1,22 +1,46 @@
 package launcher.impl;
 
+import org.mockito.*;
+import org.slf4j.*;
 import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
+import utility.impl.UserPromptUtilityImpl;
+import validator.SearchEngineValidator;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.Mockito.*;
 
-class SearchEngineLauncherImplTest {
+@ExtendWith(MockitoExtension.class)
+public class SearchEngineLauncherImplTest {
+
+    @Mock
+    private SearchEngineValidator searchEngineValidator;
+
+    @Mock
+    private UserPromptUtilityImpl userPromptUtility;
+
+    @Mock
+    private Logger log;
+
+    @InjectMocks
+    private SearchEngineLauncherImpl searchEngineLauncher;
+
+    private final String filename = "data.txt";
 
     @BeforeEach
-    void setUp() {
-        System.out.println("[BeforeEach]");
+    public void setUp() {
+        reset(searchEngineValidator, userPromptUtility, log);
     }
 
     @Test
-    void startSearchEngine() {
-        System.out.println("startSearchEngine");
-    }
+    public void testStartSearchEngine_validFile() {
+        doNothing().when(searchEngineValidator).validateInputFile(filename);
+        doNothing().when(searchEngineValidator).loadDataFromFile(filename);
+        doNothing().when(userPromptUtility).startMenu();
 
-    @AfterEach
-    void tearDown() {
-        System.out.println("[AfterEach]");
+        searchEngineLauncher.startSearchEngine(filename);
+
+        verify(searchEngineValidator, times(1)).validateInputFile(filename);
+        verify(searchEngineValidator, times(1)).loadDataFromFile(filename);
+        verify(userPromptUtility, times(1)).startMenu();
     }
 }

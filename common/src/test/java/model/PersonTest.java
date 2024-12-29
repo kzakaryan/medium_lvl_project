@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Coverage 100%
  */
+@DisplayName("Person Class Tests")
 class PersonTest {
 
     private Person person;

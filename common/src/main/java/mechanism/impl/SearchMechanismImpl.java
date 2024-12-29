@@ -1,15 +1,16 @@
 package mechanism.impl;
 
+import lombok.*;
 import mechanism.SearchMechanism;
 import model.Person;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 import java.util.*;
-import java.io.*;
 
 /**
  * Class designed for Implementing people search with given parameters
  */
+
+@Getter
 public class SearchMechanismImpl implements SearchMechanism {
 
     /**
@@ -20,6 +21,12 @@ public class SearchMechanismImpl implements SearchMechanism {
     private final List<Person> people;
     private static final Logger log = LoggerFactory.getLogger(SearchMechanismImpl.class);
 
+    private Logger logger = log;
+
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
     public SearchMechanismImpl(Map<String, Set<Integer>> invertedIndex, List<Person> people) {
         this.invertedIndex = invertedIndex;
         this.people = people;
@@ -27,6 +34,8 @@ public class SearchMechanismImpl implements SearchMechanism {
 
     /**
      * Searches for people based on user input and matching strategy.
+     *
+     * @return
      */
     @Override
     public void findPeople() {
@@ -34,18 +43,17 @@ public class SearchMechanismImpl implements SearchMechanism {
         var query = getSearchQuery();
 
         if (query == null || query.trim().isEmpty()) {
-            log.info("Search query cannot be empty");
-            return;
+            logger.info("Search query cannot be empty");
         }
 
         var queryWords = new ArrayList<>(Arrays.asList(query.split(" ")));
         var matchingIndices = findMatchingPeople(strategy, queryWords);
 
         if (matchingIndices.isEmpty()) {
-            log.info("No matching people found");
+            logger.info("No matching people found");
         } else {
             for (int index : matchingIndices) {
-                log.info(String.valueOf(people.get(index)));
+                logger.info(String.valueOf(people.get(index)));
             }
         }
     }
@@ -55,14 +63,14 @@ public class SearchMechanismImpl implements SearchMechanism {
      *
      * @return The chosen search strategy (ALL, ANY, NONE).
      */
-    private String getSearchStrategy() {
+    String getSearchStrategy() {
         while (true) {
-            log.info("Select a matching strategy: ALL, ANY, NONE: ");
+            logger.info("Select a matching strategy: ALL, ANY, NONE: ");
             var strategy = scanner.nextLine().toUpperCase().trim();
             if (strategy.equals("ALL") || strategy.equals("ANY") || strategy.equals("NONE")) {
                 return strategy;
             } else {
-                log.info("Invalid strategy. Please choose from ALL, ANY, NONE.");
+                logger.info("Invalid strategy. Please choose from ALL, ANY, NONE.");
             }
         }
     }
@@ -73,7 +81,7 @@ public class SearchMechanismImpl implements SearchMechanism {
      * @return The search query.
      */
     private String getSearchQuery() {
-        log.info("Enter a name or email to search all suitable people: ");
+        logger.info("Enter a name or email to search all suitable people: ");
         return scanner.nextLine().toLowerCase().trim();
     }
 
@@ -93,7 +101,7 @@ public class SearchMechanismImpl implements SearchMechanism {
             case "NONE":
                 return findMatchingNone(queryWords);
             default:
-                log.info("Error: Invalid strategy.");
+                logger.info("Error: Invalid strategy.");
                 return Collections.emptySet();
         }
     }
