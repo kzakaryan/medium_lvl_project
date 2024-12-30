@@ -21,6 +21,22 @@ public class SearchEngineValidator {
     private static final Logger log = LoggerFactory.getLogger(SearchEngineValidator.class);
 
     /**
+     * Creates a BufferedReader for the given file.
+     *
+     * @param file The file to create the BufferedReader for.
+     * @return The BufferedReader instance.
+     * @throws FileNotFoundException if the file does not exist.
+     */
+    protected BufferedReader createBufferedReader(File file) throws FileNotFoundException {
+        try {
+            return new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
+        } catch (java.io.FileNotFoundException e) {
+            throw new FileNotFoundException(e.getMessage());
+        }
+    }
+
+
+    /**
      * Getter for InvertedIndex
      * @return InvertedIndex private instance variable
      */
@@ -54,25 +70,18 @@ public class SearchEngineValidator {
     public void loadDataFromFile(String filename) {
         File file = new File(filename);
         if (!file.exists() || !file.isFile()) {
-            System.out.println("File does not exist or is not a valid file: " + filename);
+            log.error("File does not exist or is not a valid file: {}", filename);
             return;
         }
 
-        try (var bufferedReader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
-
+        try (BufferedReader bufferedReader = createBufferedReader(file)) {
             String line;
             int lineIndex = 0;
-
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println("Reading line " + lineIndex + ": " + line);
                 processLine(line, lineIndex);
                 lineIndex++;
             }
-
         } catch (IOException e) {
-            System.out.println("Error reading file. Path: " + filename + ". Error: " + e.getMessage());
-            e.printStackTrace();
             log.error("Error reading file: {}", e.getMessage());
         }
     }
@@ -84,7 +93,7 @@ public class SearchEngineValidator {
      * @param line The line from the file to process.
      * @param lineIndex The index of the line in the file.
      */
-    private void processLine(String line, int lineIndex) {
+    void processLine(String line, int lineIndex) {
         var parts = new ArrayList<>(Arrays.asList(line.split(" ")));
         var firstName = parts.get(0);
         var lastName = parts.get(1);
@@ -107,7 +116,7 @@ public class SearchEngineValidator {
      * @param word The word to add.
      * @param lineIndex The index of the line in which the word was found.
      */
-    private void addToInvertedIndex(String word, int lineIndex) {
+    void addToInvertedIndex(String word, int lineIndex) {
         word = word.toLowerCase();
         invertedIndex.putIfAbsent(word, new HashSet<>());
         invertedIndex.get(word).add(lineIndex);

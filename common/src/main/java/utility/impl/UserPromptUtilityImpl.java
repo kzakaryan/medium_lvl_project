@@ -12,10 +12,10 @@ import java.util.Scanner;
  */
 public class UserPromptUtilityImpl implements UserPromptUtility {
 
-    private boolean running = true;
+    boolean running = true;
     private final SearchEngineValidator searchEngineValidator;
     private final SearchMechanismImpl searchMechanism;
-    private final Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
     private static final Logger log = LoggerFactory.getLogger(UserPromptUtilityImpl.class);
 
     public UserPromptUtilityImpl(SearchEngineValidator searchEngineValidator) {
