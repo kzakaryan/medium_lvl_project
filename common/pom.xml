@@ -7,7 +7,7 @@
     <parent>
         <groupId>medium_lvl_project</groupId>
         <artifactId>medium_lvl_project</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>4.0.0-beta-3</version>
     </parent>
 
     <artifactId>common</artifactId>

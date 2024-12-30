@@ -7,7 +7,7 @@
     <packaging>pom</packaging>
     <groupId>medium_lvl_project</groupId>
     <artifactId>medium_lvl_project</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>4.0.0-beta-3</version>
 
     <properties>
         <java.version>23</java.version>
@@ -28,7 +28,7 @@
             <dependency>
                 <groupId>medium_lvl_project</groupId>
                 <artifactId>viewer</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>4.0.0-beta-3</version>
             </dependency>
 
             <dependency>
