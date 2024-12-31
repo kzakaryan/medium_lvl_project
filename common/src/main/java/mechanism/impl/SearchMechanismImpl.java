@@ -63,7 +63,7 @@ public class SearchMechanismImpl implements SearchMechanism {
      *
      * @return The chosen search strategy (ALL, ANY, NONE).
      */
-    String getSearchStrategy() {
+    public String getSearchStrategy() {
         while (true) {
             logger.info("Select a matching strategy: ALL, ANY, NONE: ");
             var strategy = scanner.nextLine().toUpperCase().trim();
