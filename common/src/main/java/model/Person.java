@@ -1,5 +1,8 @@
 package model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Person record designed to store people in search engine.
  */
@@ -10,15 +13,15 @@ public record Person(String firstName, String lastName, String email) {
         return firstName + " " + lastName + " " + email;
     }
 
-//    public String getFirstName() {
-//        return firstName;
-//    }
-//
-//    public String getLastName() {
-//        return lastName;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

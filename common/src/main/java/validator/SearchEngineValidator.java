@@ -27,12 +27,16 @@ public class SearchEngineValidator {
      * @return The BufferedReader instance.
      * @throws FileNotFoundException if the file does not exist.
      */
-    protected BufferedReader createBufferedReader(File file) throws FileNotFoundException {
+    public BufferedReader createBufferedReader(File file) throws FileNotFoundException {
         try {
             return new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
         } catch (java.io.FileNotFoundException e) {
             throw new FileNotFoundException(e.getMessage());
         }
+    }
+
+    public BufferedReader createBufferedReader(BufferedReader bufferedReader) {
+        return bufferedReader;
     }
 
 
