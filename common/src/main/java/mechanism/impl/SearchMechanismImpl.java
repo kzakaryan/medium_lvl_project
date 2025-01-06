@@ -20,7 +20,6 @@ public class SearchMechanismImpl implements SearchMechanism {
     private final Map<String, Set<Integer>> invertedIndex;
     private final List<Person> people;
     private static final Logger log = LoggerFactory.getLogger(SearchMechanismImpl.class);
-
     private Logger logger = log;
 
     public void setLogger(Logger logger) {
@@ -34,8 +33,6 @@ public class SearchMechanismImpl implements SearchMechanism {
 
     /**
      * Searches for people based on user input and matching strategy.
-     *
-     * @return
      */
     @Override
     public void findPeople() {
@@ -80,7 +77,7 @@ public class SearchMechanismImpl implements SearchMechanism {
      *
      * @return The search query.
      */
-    private String getSearchQuery() {
+    String getSearchQuery() {
         logger.info("Enter a name or email to search all suitable people: ");
         return scanner.nextLine().toLowerCase().trim();
     }
@@ -92,7 +89,7 @@ public class SearchMechanismImpl implements SearchMechanism {
      * @param queryWords A list of words to search for.
      * @return A set of indices of matching people.
      */
-    private Set<Integer> findMatchingPeople(String strategy, ArrayList<String> queryWords) {
+    Set<Integer> findMatchingPeople(String strategy, ArrayList<String> queryWords) {
         switch (strategy) {
             case "ALL":
                 return findMatchingAll(queryWords);
@@ -112,7 +109,7 @@ public class SearchMechanismImpl implements SearchMechanism {
      * @param queryWords A list of words to search for.
      * @return A set of indices of matching people.
      */
-    private Set<Integer> findMatchingAll(ArrayList<String> queryWords) {
+    Set<Integer> findMatchingAll(ArrayList<String> queryWords) {
         if (queryWords.isEmpty()) {
             return Collections.emptySet();
         }
@@ -140,7 +137,7 @@ public class SearchMechanismImpl implements SearchMechanism {
      * @param queryWords A list of words to search for.
      * @return A set of indices of matching people.
      */
-    private Set<Integer> findMatchingAny(ArrayList<String> queryWords) {
+    Set<Integer> findMatchingAny(ArrayList<String> queryWords) {
         Set<Integer> result = new HashSet<>();
         for (String word : queryWords) {
             result.addAll(invertedIndex.getOrDefault(word, Collections.emptySet()));
@@ -154,7 +151,7 @@ public class SearchMechanismImpl implements SearchMechanism {
      * @param queryWords A list of words to search for.
      * @return A set of indices of non-matching people.
      */
-    private Set<Integer> findMatchingNone(ArrayList<String> queryWords) {
+    Set<Integer> findMatchingNone(ArrayList<String> queryWords) {
         Set<Integer> nonMatchingIndices = new HashSet<>();
         for (int i = 0; i < people.size(); i++) {
             boolean isNonMatching = true;
