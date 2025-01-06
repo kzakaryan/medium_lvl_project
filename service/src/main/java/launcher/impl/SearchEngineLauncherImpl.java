@@ -12,7 +12,6 @@ import org.slf4j.*;
  * It loads data from a file, stores it in an inverted index, and offers a menu to search and display data.
  */
 @Getter
-@Setter
 public class SearchEngineLauncherImpl implements SearchEngine {
 
     /**
@@ -22,6 +21,9 @@ public class SearchEngineLauncherImpl implements SearchEngine {
     UserPromptUtilityImpl userPromptUtility = new UserPromptUtilityImpl(searchEngineValidator);
     private Logger log = LoggerFactory.getLogger(SearchEngineLauncherImpl.class);
 
+    public void setLog(Logger log) {
+        this.log = log;
+    }
 
     /**
      * Starts the search engine by loading data from the specified file and displaying the menu to the user.
