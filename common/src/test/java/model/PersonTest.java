@@ -20,9 +20,9 @@ class PersonTest {
     @Test
     void PersonParamTest() {
         assertAll("Test Props Set:",
-                () -> assertEquals("Xachik", person.firstName(), "First Name Failed"),
-                () -> assertEquals("Zakaryan", person.lastName(), "Last Name Failed"),
-                () -> assertEquals("kzakaryan@gmail.com", person.email(), "Email Failed")
+                () -> assertEquals("Xachik", person.getFirstName(), "First Name Failed"),
+                () -> assertEquals("Zakaryan", person.getLastName(), "Last Name Failed"),
+                () -> assertEquals("kzakaryan@gmail.com", person.getEmail(), "Email Failed")
         );
     }
 

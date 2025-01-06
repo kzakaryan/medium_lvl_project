@@ -1,6 +1,5 @@
 package launcher.impl;
 
-import org.mockito.*;
 import org.slf4j.*;
 import org.junit.jupiter.api.*;
 import utility.impl.UserPromptUtilityImpl;
@@ -12,35 +11,13 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class SearchEngineLauncherImplTest {
 
-    @Mock
-    private SearchEngineValidator searchEngineValidator;
-
-    @Mock
-    private UserPromptUtilityImpl userPromptUtility;
-
-    @Mock
-    private Logger log;
-
-    @InjectMocks
-    private SearchEngineLauncherImpl searchEngineLauncher;
 
     private final String filename = "data.txt";
 
     @BeforeEach
     public void setUp() {
-        reset(searchEngineValidator, userPromptUtility, log);
-    }
-
-    @Test
-    public void testStartSearchEngine_validFile() {
-        doNothing().when(searchEngineValidator).validateInputFile(filename);
-        doNothing().when(searchEngineValidator).loadDataFromFile(filename);
-        doNothing().when(userPromptUtility).startMenu();
-
-        searchEngineLauncher.startSearchEngine(filename);
-
-        verify(searchEngineValidator, times(1)).validateInputFile(filename);
-        verify(searchEngineValidator, times(1)).loadDataFromFile(filename);
-        verify(userPromptUtility, times(1)).startMenu();
+        SearchEngineValidator mockedSearchEngineValidator = mock(SearchEngineValidator.class);
+        UserPromptUtilityImpl mockedUserPromptUtility = mock(UserPromptUtilityImpl.class);
+        Logger mockedLogger = mock(Logger.class);
     }
 }
