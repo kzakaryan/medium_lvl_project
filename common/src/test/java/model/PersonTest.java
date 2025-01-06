@@ -1,0 +1,34 @@
+package model;
+
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Coverage 100%
+ */
+@DisplayName("Person Class Tests")
+class PersonTest {
+
+    private Person person;
+
+    @BeforeEach
+    void setUp() {
+        person = new Person("Xachik", "Zakaryan", "kzakaryan@gmail.com");
+    }
+
+    @DisplayName("Testing Instance Variables")
+    @Test
+    void PersonParamTest() {
+        assertAll("Test Props Set:",
+                () -> assertEquals("Xachik", person.getFirstName(), "First Name Failed"),
+                () -> assertEquals("Zakaryan", person.getLastName(), "Last Name Failed"),
+                () -> assertEquals("kzakaryan@gmail.com", person.getEmail(), "Email Failed")
+        );
+    }
+
+    @DisplayName("Testing toString()")
+    @Test
+    void toStringTest() {
+        assertEquals("Xachik Zakaryan kzakaryan@gmail.com", person.toString(), "toString Failed");
+    }
+}
